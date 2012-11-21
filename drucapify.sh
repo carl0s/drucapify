@@ -102,6 +102,15 @@ if [ ! -d "includes" ]; then
     exit 1
 
 else
+
+    echo "  "
+    echo "  "
+    echo "---------------------------------------------"
+    echo "  Preparing environment for cosy deployment  "
+    echo "---------------------------------------------"
+    echo "  "
+    echo "  "
+
     cp /tmp/Drushistrano/Capfile .
     cp -R /tmp/Drushistrano/includes/deploy includes/
     sed -i -bak "s/#APPLICATION_NAME#/$PROJECT/g" includes/deploy/stages.rb
