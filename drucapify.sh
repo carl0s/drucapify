@@ -18,17 +18,16 @@ then
    exit 0
 fi
 
-while getopts d:g:b:i:u:h o
+while getopts p:d:g:b:i:u:h o
 do  case "$o" in
     d)  directory="$OPTARG";;
-    s)  paste=hpaste;;
-    [?])    print >&2 "Usage: $0 [-s] [-d seplist] file ..."
-        exit 1;;
+
     esac
 done
 shift $OPTIND-1
 
 clear
+
 echo -n "INSERT THE PROJECT NAME : "
 read PROJECT
 if [ "$PROJECT" = '' ]; then
@@ -136,13 +135,32 @@ else
     echo "  "
     echo "  "
     echo "---------------------------------------------"
-    echo "  Removing default folder from drupal "
+    echo "  Removing old default folder from drupal "
     echo "---------------------------------------------"
     echo "  "
     echo "  "
     rm -rf default
     cp -R /tmp/Drushistrano/default-development .
     cp -R /tmp/Drushistrano/default-production .
+    echo "  "
+    echo "  "
+    echo "---------------------------------------------"
+    echo "         Creating the right domain "
+    echo "---------------------------------------------"
+    echo "  "
+    echo "  "
+
+    cp -R /tmp/Drushistrano/default $PROJECT
+
+    echo "  "
+    echo "  "
+    echo "---------------------------------------------"
+    echo "         Symlinking for the win "
+    echo "---------------------------------------------"
+    echo "  "
+    echo "  "
+
+    ln -s $PROJECT default
 fi
 
 
