@@ -12,4 +12,6 @@ Usage: [./]drucapify [-d folder] [-g git repo] [-b git branch] [-i remote ip] [-
 * -b   defines the git branch
 * -i   defines the remote ip
 * -u   defines the user
+* -s   defines the domain
+* -t	 initializing git repository
 * -h   displays basic help

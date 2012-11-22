@@ -9,6 +9,8 @@ Usage: scriptname [-d folder] [-p project] [-g git repo] [-b git branch] [-i rem
    -b   defines the git branch
    -i   defines the remote ip
    -u   defines the user
+   -s   defines the domain
+   -t   initializing git repo
    -h   displays basic help
 EOF
 }
@@ -19,7 +21,7 @@ then
    exit 0
 fi
 
-while getopts p:d:g:b:i:u:h:s o
+while getopts p:d:g:b:i:u:h:s:t o
 do  case "$o" in
     p)  APPLICATION="$OPTARG";;
     d)  PROJECT="$OPTARG";;
@@ -28,6 +30,7 @@ do  case "$o" in
     i)  REMOTE_IP="$OPTARG";;
     u)  USER="$OPTARG";;
     s)  DOMAIN="$OPTARG";;
+    t)  GIT_INIT="$OPTARG";;
 
     esac
 done
@@ -98,7 +101,7 @@ else
         echo "  "
         echo "  "
 
-        cd $APPLICATION
+        cd $PROJECT
         rm -rf .git
         rm -rf .gitignore
 
@@ -183,23 +186,27 @@ else
         echo -n ln -s $APPLICATION default
         echo "                  [ok!]"
 
-        echo "  "
-        echo "  "
-        echo "---------------------------------------------"
-        echo "         Initialized Git environment "
-        echo "---------------------------------------------"
-        echo "  "
-        echo "  "
+        if [ ! GIT_INIT = "" ]; then
+            echo "  "
+            echo "  "
+            echo "---------------------------------------------"
+            echo "         Initialized Git environment "
+            echo "---------------------------------------------"
+            echo "  "
+            echo "  "
 
-        git init $PROJECT/.
-        cp /tmp/Drushistrano/gitignore .gitignore
-        git add .
-        git add -f $PROJECT/sites/$APPLICATION/settings.development.php
-        git add -f $PROJECT/sites/$APPLICATION/settings.production.php
-        git commit -am "Initial commit"
-        git remote add origin git@git.nois3lab.it:$REMOTE_GIT.git
-        echo "[ok!]"
+            git init $PROJECT/.
+            cp /tmp/Drushistrano/gitignore .gitignore
+            git add .
+            git commit -am "Initial commit"
+            git remote add origin git@git.nois3lab.it:$REMOTE_GIT.git
+            echo "[ok!]"
+        else
+            git add -f $PROJECT/sites/$APPLICATION/settings.development.php
+            git add -f $PROJECT/sites/$APPLICATION/settings.production.php
+            git commit -am "Adding settings to repository"
 
+        fi
     fi
 
 fi
