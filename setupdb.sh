@@ -7,7 +7,7 @@ Usage: scriptname [-d folder] [-p project] [-g git repo] [-b git branch] [-i rem
    -d  database name
    -u   defines the user
    -p   defines the password
-   -t   settings path
+   -t   website path
    -h   displays basic help
 EOF
 }
