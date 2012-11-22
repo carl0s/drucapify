@@ -21,7 +21,7 @@ then
    exit 0
 fi
 
-while getopts p:d:g:b:i:u:h:s:t o
+while getopts p:d:g:b:i:u:h:s o
 do  case "$o" in
     p)  APPLICATION="$OPTARG";;
     d)  PROJECT="$OPTARG";;
@@ -30,36 +30,46 @@ do  case "$o" in
     i)  REMOTE_IP="$OPTARG";;
     u)  USER="$OPTARG";;
     s)  DOMAIN="$OPTARG";;
-    t)  GIT_INIT="$OPTARG";;
 
     esac
 done
 shift $OPTIND-1
 
+if [ "$PROJECT" = "" ]; then
+    echo "give me a project name"
+    exit 0
+fi
 
-if [ REMOTE_GIT = "" ]; then
+if [ "$APPLICATION" = "" ]; then
+    echo "give me an application name"
+    exit 0
+fi
+
+
+if [ "$REMOTE_GIT" = "" ]; then
     REMOTE_GIT=$APPLICATION
 fi
 
-if [ BRANCH = "" ]; then
+if [ "$BRANCH" = "" ]; then
     BRANCH="master"
 fi
 
-if [ REMOTE_IP = "" ]; then
+if [ "$REMOTE_IP" = "" ]; then
     REMOTE_IP="cap.nois3lab.it"
 fi
 
-if [ USER = "" ]; then
+if [ "$USER" = "" ]; then
     USER="nois3lab"
 fi
 
-if [ DOMAIN != "" ]; then
+if [ "$DOMAIN" != "" ]; then
     DOMAIN=$APPLICATION
 fi
 
 clear
 
-if [ ! -d $PROJECT"/sites" ]; then
+
+if [ ! -d "$PROJECT/sites" ]; then
     echo "$PROJECT/sites"
     echo "This is for Drupal projects, please provide a 'sites' folder"
     exit 1
@@ -186,11 +196,11 @@ else
         echo -n ln -s $APPLICATION default
         echo "                  [ok!]"
 
-        if [ ! GIT_INIT = "" ]; then
+        if [ ! -d "$PROJECT/.git" ]; then
             echo "  "
             echo "  "
             echo "---------------------------------------------"
-            echo "         Initialized Git environment "
+            echo "         Initializing Git environment "
             echo "---------------------------------------------"
             echo "  "
             echo "  "
@@ -199,6 +209,8 @@ else
             cp /tmp/Drushistrano/gitignore .gitignore
             git add .
             git commit -am "Initial commit"
+            git add -f $PROJECT/sites/$APPLICATION/settings.development.php
+            git add -f $PROJECT/sites/$APPLICATION/settings.production.php
             git remote add origin git@git.nois3lab.it:$REMOTE_GIT.git
             echo "[ok!]"
         else
