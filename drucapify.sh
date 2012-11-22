@@ -21,7 +21,7 @@ then
    exit 0
 fi
 
-while getopts p:d:g:b:i:u:h:s o
+while getopts p:d:g:b:i:u:h:s:m o
 do  case "$o" in
     p)  APPLICATION="$OPTARG";;
     d)  PROJECT="$OPTARG";;
@@ -30,7 +30,10 @@ do  case "$o" in
     i)  REMOTE_IP="$OPTARG";;
     u)  USER="$OPTARG";;
     s)  DOMAIN="$OPTARG";;
-
+    m)  MAMP="$OPTARG";;
+    \?) echo "Invalid option: -$OPTARG" >&2
+        usage
+        exit 1
     esac
 done
 shift $OPTIND-1
